@@ -34,3 +34,51 @@ def preprocess_airport():
                 'state_code': state_code
             })
     return result
+
+
+def preprocess_country():
+    """Preprocess country table."""
+    result = []
+    with open('mapping/i94cntyl.txt', 'r') as file:
+        for line in file:
+            line = line.replace("'", "").strip()
+            country_code, country_name = tuple(
+                map(lambda x: x.strip(), line.split('='))
+            )
+            result.append(
+                {'country_code': country_code, 'country_name': country_name}
+            )
+    return result
+
+
+def preprocess_transport_type():
+    """Preprocess transport_type table."""
+    result = []
+    with open('mapping/i94model.txt', 'r') as file:
+        for line in file:
+            line = line.replace("'", "").strip()
+            transport_code, transport_name = tuple(
+                map(lambda x: x.strip(), line.split('='))
+            )
+            result.append(
+                {
+                    'transport_code': transport_code,
+                    'transport_name': transport_name
+                }
+            )
+    return result
+
+
+def preprocess_visa_type():
+    """Preprocess visa_type table."""
+    result = []
+    with open('mapping/i94visa.txt', 'r') as file:
+        for line in file:
+            line = line.replace("'", "").strip()
+            visa_code, visa_name = tuple(
+                map(lambda x: x.strip(), line.split('='))
+            )
+            result.append(
+                {'visa_code': visa_code, 'visa_name': visa_name}
+            )
+    return result
