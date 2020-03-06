@@ -1,26 +1,29 @@
 """SQL for redshift."""
 
+# i94addr -> state_code
+# i94cit -> birth country
+# i94res -> resident country
 immigration_table_create = (
     """
     CREATE TABLE IF NOT EXISTS immigration (
-        cicid    VARCHAR,
-        i94mon   INT,
-        i94yr    INT,
-        i94cit   VARCHAR,
-        i94res   VARCHAR,
-        i94addr  VARCHAR,
-        i94mode  VARCHAR,
-        i94port  VARCHAR,
-        i94visa  VARCHAR,
-        arrdate  VARCHAR,
-        depdate  VARCHAR,
-        biryear  VARCHAR,
-        gender   VARCHAR,
-        visatype VARCHAR,
-        fltno    VARCHAR,
-        airline  VARCHAR,
-        matflag  VARCHAR,
-        admnum   VARCHAR,
+        cicid       VARCHAR,
+        i94mon      INT,
+        i94yr       INT,
+        i94cit      VARCHAR,
+        i94res      VARCHAR,
+        state_code  VARCHAR,
+        i94mode     VARCHAR,
+        i94port     VARCHAR,
+        i94visa     VARCHAR,
+        arrdate     VARCHAR,
+        depdate     VARCHAR,
+        biryear     VARCHAR,
+        gender      VARCHAR,
+        visatype    VARCHAR,
+        fltno       VARCHAR,
+        airline     VARCHAR,
+        matflag     VARCHAR,
+        admnum      VARCHAR,
     )
     """
 )
@@ -61,13 +64,48 @@ airport_table_create = (
     )
     """
 )
-
 # from i94visa.txt
 visa_type_table_create = (
     """
     CREATE TABLE IF NOT EXISTS visa_type (
         visa_code INT,
         visa_name VARCHAR
+    )
+    """
+)
+# airport-codes_csv.csv
+# municipality -> city
+airport_detail_table_create = (
+    """
+    CREATE TABLE IF NOT EXISTS airport_detail (
+        airport_id   INT,
+        type         VARCHAR,
+        name         VARCHAR,
+        elevation_ft INT,
+        country      VARCHAR,
+        city         VARCHAR,
+        iata_code    VARCHAR,
+        latitude     FLOAT,
+        longitude    FLOAT
+    )
+    """
+)
+# us-cities-demographics.csv
+cities_demographics_table_create = (
+    """
+    CREATE TABLE IF NOT EXISTS cities_demographics (
+        city_id                INT,
+        city                   VARCHAR,
+        state                  VARCHAR,
+        median_age             REAL,
+        male_population        INT,
+        female_population      INT,
+        total_population       INT,
+        veteran_count          INT,
+        foreign_born           INT,
+        average_household_size REAL,
+        state_code             VARCHAR,
+        race                   VARCHAR
     )
     """
 )
