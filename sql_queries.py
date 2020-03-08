@@ -1,29 +1,30 @@
 """SQL for redshift."""
 
 # i94addr -> state_code
-# i94cit -> birth country
-# i94res -> resident country
+# i94cit -> birth_country
+# i94res -> residence_country
+# i94port -> airport_code
 immigration_table_create = (
     """
     CREATE TABLE IF NOT EXISTS immigration (
-        cicid       VARCHAR,
-        i94mon      INT,
-        i94yr       INT,
-        i94cit      VARCHAR,
-        i94res      VARCHAR,
-        state_code  VARCHAR,
-        i94mode     VARCHAR,
-        i94port     VARCHAR,
-        i94visa     VARCHAR,
-        arrdate     VARCHAR,
-        depdate     VARCHAR,
-        biryear     VARCHAR,
-        gender      VARCHAR,
-        visatype    VARCHAR,
-        fltno       VARCHAR,
-        airline     VARCHAR,
-        matflag     VARCHAR,
-        admnum      VARCHAR,
+        cicid             VARCHAR,
+        i94mon            INT,
+        i94yr             INT,
+        birth_country     VARCHAR,
+        residence_country VARCHAR,
+        state_code        VARCHAR,
+        i94mode           VARCHAR,
+        airport_code      VARCHAR,
+        i94visa           VARCHAR,
+        arrdate           VARCHAR,
+        depdate           VARCHAR,
+        biryear           VARCHAR,
+        gender            VARCHAR,
+        visatype          VARCHAR,
+        fltno             VARCHAR,
+        airline           VARCHAR,
+        matflag           VARCHAR,
+        admnum            VARCHAR
     )
     """
 )
@@ -75,6 +76,7 @@ visa_type_table_create = (
 )
 # airport-codes_csv.csv
 # municipality -> city
+# iata_code -> airport_code
 airport_detail_table_create = (
     """
     CREATE TABLE IF NOT EXISTS airport_detail (
@@ -84,7 +86,7 @@ airport_detail_table_create = (
         elevation_ft INT,
         country      VARCHAR,
         city         VARCHAR,
-        iata_code    VARCHAR,
+        airport_code VARCHAR,
         latitude     FLOAT,
         longitude    FLOAT
     )
@@ -104,8 +106,10 @@ cities_demographics_table_create = (
         veteran_count          INT,
         foreign_born           INT,
         average_household_size REAL,
-        state_code             VARCHAR,
-        race                   VARCHAR
+        state_code             VARCHAR
     )
     """
 )
+
+# join (immigration, airport, airport_detail)
+# join cities_demographics
