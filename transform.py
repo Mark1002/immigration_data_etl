@@ -172,22 +172,25 @@ class SparkTransformModule:
     def transform_state(self) -> DataFrame:
         """Transform to state dataframe."""
         state_list = preprocess_state()
-        state_df = self.spark.sparkContext.parallelize(state_list)\
-            .map(self.convert_to_row).toDF()
+        state_df = self.spark.createDataFrame(
+            map(self.convert_to_row, state_list)
+        )
         return state_df
 
     def transform_airport(self) -> DataFrame:
         """Transform to airport dataframe."""
         airport_list = preprocess_airport()
-        airport_df = self.spark.sparkContext.parallelize(airport_list)\
-            .map(self.convert_to_row).toDF()
+        airport_df = self.spark.createDataFrame(
+            map(self.convert_to_row, airport_list)
+        )
         return airport_df
 
     def transform_country(self) -> DataFrame:
         """Transform to country dataframe."""
         country_list = preprocess_country()
-        country_df = self.spark.sparkContext.parallelize(country_list)\
-            .map(self.convert_to_row).toDF()
+        country_df = self.spark.createDataFrame(
+            map(self.convert_to_row, country_list)
+        )
         country_df = country_df.withColumn(
             'country_code', col('country_code').cast(IntegerType())
         )
@@ -196,8 +199,9 @@ class SparkTransformModule:
     def transform_transport_type(self) -> DataFrame:
         """Transform to transport_type dataframe."""
         transport_list = preprocess_transport_type()
-        transport_df = self.spark.sparkContext.parallelize(transport_list)\
-            .map(self.convert_to_row).toDF()
+        transport_df = self.spark.createDataFrame(
+            map(self.convert_to_row, transport_list)
+        )
         transport_df = transport_df.withColumn(
             'transport_code', col('transport_code').cast(IntegerType())
         )
@@ -206,8 +210,9 @@ class SparkTransformModule:
     def transform_visa_type(self) -> DataFrame:
         """Transform to visa_type dataframe."""
         visa_list = preprocess_visa_type()
-        visa_df = self.spark.sparkContext.parallelize(visa_list)\
-            .map(self.convert_to_row).toDF()
+        visa_df = self.spark.createDataFrame(
+            map(self.convert_to_row, visa_list)
+        )
         visa_df = visa_df.withColumn(
             'visa_code', col('visa_code').cast(IntegerType())
         )
