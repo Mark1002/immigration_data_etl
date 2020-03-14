@@ -85,21 +85,18 @@ Resources:
          sudo yum install -y git
          # Clone the git repository
          git clone https://github.com/Mark1002/immigration_data_etl.git
-         # install python3.6
-         sudo yum install -y python36 python36-pip
-         sudo pip-3.6 install boto3
+         sudo pip install boto3
          # Install airflow using pip
          echo "Install Apache Airflow"
-         sudo SLUGIFY_USES_TEXT_UNIDECODE=yes pip-3.6 install -U apache-airflow
+         sudo SLUGIFY_USES_TEXT_UNIDECODE=yes pip install -U apache-airflow
          # Encrypt connection passwords in metadata db
-         sudo pip-3.6 install apache-airflow[crypto]
+         sudo pip install apache-airflow[crypto]
          # Postgres operators and hook, support as an Airflow backend
-         sudo pip-3.6 install apache-airflow[postgres]
-         sudo -H pip-3.6 install six==1.10.0
-         sudo pip-3.6 install --upgrade six
-         sudo pip-3.6 install markupsafe
-         sudo pip-3.6 install --upgrade MarkupSafe
-         sudo pip-3.6 install s3fs==0.4.0 
+         sudo pip install apache-airflow[postgres]
+         sudo -H pip install six==1.10.0
+         sudo pip install --upgrade six
+         sudo pip install markupsafe
+         sudo pip install --upgrade MarkupSafe
          echo 'export PATH=/usr/local/bin:$PATH' >> /root/.bash_profile
          source /root/.bash_profile
          # Initialize Airflow
