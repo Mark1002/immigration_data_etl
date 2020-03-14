@@ -97,6 +97,8 @@ Resources:
          sudo pip install --upgrade six
          sudo pip install markupsafe
          sudo pip install --upgrade MarkupSafe
+         sudo pip install boto3==1.12.11
+         sudo pip install s3fs==0.4.0 
          echo 'export PATH=/usr/local/bin:$PATH' >> /root/.bash_profile
          source /root/.bash_profile
          # Initialize Airflow
