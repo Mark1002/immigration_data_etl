@@ -37,7 +37,7 @@ class S3UploadModule:
         """Upload mapping data."""
         for file in os.listdir('mapping'):
             self.s3_client.upload_file(
-                file, self.s3_bucket, f'data/mapping/{file}'
+                f'mapping/{file}', self.s3_bucket, f'data/mapping/{file}'
             )
 
     def upload_airport_data(self):
