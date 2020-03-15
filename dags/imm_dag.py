@@ -17,7 +17,7 @@ default_args = {
 # Initialize the DAG
 # Concurrency --> Number of tasks allowed to run concurrently
 dag = DAG(
-    'transform_immigration', concurrency=3,
+    'us_immigration_etl', concurrency=3,
     schedule_interval=None, default_args=default_args
 )
 region = emr.get_region()
@@ -85,6 +85,12 @@ def transform_immigration_to_parquet(**kwargs):
     submit_emr(**kwargs)
 
 
+def transform_imm_city_demographics_to_parquet(**kwargs):
+    """Converts imm_city_demographics to parquet."""
+    kwargs['file_path'] = '/root/airflow/dags/transform/imm_city_demographics.py' # noqa
+    submit_emr(**kwargs)
+
+
 create_cluster = PythonOperator(
     task_id='create_cluster',
     python_callable=create_emr,
@@ -110,6 +116,16 @@ transform_cities_demographics = PythonOperator(
     python_callable=transform_cities_demographics_to_parquet,
     dag=dag)
 
+transform_immigration = PythonOperator(
+    task_id='transform_immigration',
+    python_callable=transform_immigration_to_parquet,
+    dag=dag)
+
+transform_imm_city_demographics = PythonOperator(
+    task_id='transform_imm_city_demographics',
+    python_callable=transform_imm_city_demographics_to_parquet,
+    dag=dag)
+
 terminate_cluster = PythonOperator(
     task_id='terminate_cluster',
     python_callable=terminate_emr,
@@ -117,6 +133,7 @@ terminate_cluster = PythonOperator(
     dag=dag)
 
 create_cluster >> wait_for_cluster_completion >> transform_i94mapping
-transform_i94mapping >> transform_airport_detail # noqa
-transform_airport_detail >> transform_cities_demographics
-transform_cities_demographics >> terminate_cluster
+transform_i94mapping >> transform_airport_detail >> transform_immigration
+transform_i94mapping >> transform_cities_demographics >> transform_immigration
+transform_immigration >> transform_imm_city_demographics
+transform_imm_city_demographics >> terminate_cluster
