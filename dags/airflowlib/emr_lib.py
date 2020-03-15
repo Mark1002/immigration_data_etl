@@ -46,13 +46,17 @@ def create_cluster(
                     'InstanceRole': 'MASTER',
                     'InstanceType': master_instance_type,
                     'InstanceCount': 1,
-                    'Classification': 'spark-env',
                     'Configurations': [
                         {
-                            "Classification": "export",
-                            "Properties": {
-                                "PYSPARK_PYTHON": "/usr/bin/python3"
-                            }
+                            'Classification': 'spark-env',
+                            'Configurations': [
+                                {
+                                    "Classification": "export",
+                                    "Properties": {
+                                        "PYSPARK_PYTHON": "/usr/bin/python3"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
