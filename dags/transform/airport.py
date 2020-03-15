@@ -28,8 +28,9 @@ def preprocess_airport() -> list:
     return result
 
 
-def transform_airport(airport_list: list) -> DataFrame:
+def transform_airport() -> DataFrame:
     """Transform to airport dataframe."""
+    airport_list = preprocess_airport()
     airport_df = spark.createDataFrame(
         map(
             lambda d: Row(**OrderedDict(sorted(d.items()))),
@@ -41,8 +42,7 @@ def transform_airport(airport_list: list) -> DataFrame:
 
 def main():
     """Main entry point."""
-    airport_list = preprocess_airport()
-    airport_df = transform_airport(airport_list)
+    airport_df = transform_airport()
     airport_df.write.mode('overwrite').parquet(
         's3a://<s3-bucket>/processed/airport.parquet'
     )
