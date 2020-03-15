@@ -45,18 +45,9 @@ def create_cluster(
                     'Market': 'ON_DEMAND',
                     'InstanceRole': 'MASTER',
                     'InstanceType': master_instance_type,
-                    'InstanceCount': 1
-                },
-                {
-                    'Name': "Slave nodes",
-                    'Market': 'ON_DEMAND',
-                    'InstanceRole': 'CORE',
-                    'InstanceType': core_node_instance_type,
-                    'InstanceCount': num_core_nodes
-                },
-                {
-                    "Classification": "spark-env",
-                    "Configurations": [
+                    'InstanceCount': 1,
+                    'Classification': 'spark-env',
+                    'Configurations': [
                         {
                             "Classification": "export",
                             "Properties": {
@@ -64,6 +55,13 @@ def create_cluster(
                             }
                         }
                     ]
+                },
+                {
+                    'Name': "Slave nodes",
+                    'Market': 'ON_DEMAND',
+                    'InstanceRole': 'CORE',
+                    'InstanceType': core_node_instance_type,
+                    'InstanceCount': num_core_nodes
                 }
             ],
             'KeepJobFlowAliveWhenNoSteps': True,
