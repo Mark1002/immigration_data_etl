@@ -161,22 +161,9 @@ terminate_cluster = PythonOperator(
     dag=dag)
 
 create_cluster >> wait_for_cluster_completion >> transform_airport
-transform_airport >> terminate_cluster
+transform_airport >> transform_state >> transform_country
+transform_country >> transform_visa_type >> transform_transport_type
 
-create_cluster >> wait_for_cluster_completion >> transform_state
-transform_state >> terminate_cluster
-
-create_cluster >> wait_for_cluster_completion >> transform_country
-transform_country >> terminate_cluster
-
-create_cluster >> wait_for_cluster_completion >> transform_visa_type
-transform_visa_type >> terminate_cluster
-
-create_cluster >> wait_for_cluster_completion >> transform_transport_type # noqa
-transform_transport_type >> terminate_cluster
-
-create_cluster >> wait_for_cluster_completion >> transform_airport_detail # noqa
-transform_airport_detail >> terminate_cluster
-
-create_cluster >> wait_for_cluster_completion >> transform_cities_demographics # noqa
+transform_transport_type >> transform_airport_detail # noqa
+transform_airport_detail >> transform_cities_demographics
 transform_cities_demographics >> terminate_cluster

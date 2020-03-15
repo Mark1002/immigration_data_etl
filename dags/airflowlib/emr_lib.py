@@ -131,8 +131,11 @@ def wait_for_idle_session(master_dns, response_headers):
     while status != 'idle':
         time.sleep(3)
         status_response = requests.get(session_url, headers=response_headers)
-        status = status_response.json()['state']
-        logging.info('Session status: ' + status)
+        if isinstance(status_response.json(), dict):
+            status = status_response.json()['state']
+            logging.info('Session status: ' + status)
+        else:
+            logging.info(status_response.json())
     return session_url
 
 
