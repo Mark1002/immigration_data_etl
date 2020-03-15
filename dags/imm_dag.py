@@ -61,33 +61,9 @@ def submit_emr(**kwargs):
     emr.kill_spark_session(session_url)
 
 
-def transform_airport_to_parquet(**kwargs):
-    """Converts airport mapping to parquet."""
-    kwargs['file_path'] = '/root/airflow/dags/transform/airport.py'
-    submit_emr(**kwargs)
-
-
-def transform_state_to_parquet(**kwargs):
-    """Converts state mapping to parquet."""
-    kwargs['file_path'] = '/root/airflow/dags/transform/state.py'
-    submit_emr(**kwargs)
-
-
-def transform_visa_type_to_parquet(**kwargs):
-    """Converts visa_type mapping to parquet."""
-    kwargs['file_path'] = '/root/airflow/dags/transform/visa_type.py'
-    submit_emr(**kwargs)
-
-
-def transform_country_to_parquet(**kwargs):
-    """Converts country mapping to parquet."""
-    kwargs['file_path'] = '/root/airflow/dags/transform/country.py'
-    submit_emr(**kwargs)
-
-
-def transform_transport_type_to_parquet(**kwargs):
-    """Converts transport_type mapping to parquet."""
-    kwargs['file_path'] = '/root/airflow/dags/transform/transport_type.py'
+def transform_i94mapping_to_parquet(**kwargs):
+    """Converts all i94mapping text data to parquet."""
+    kwargs['file_path'] = '/root/airflow/dags/transform/i94mapping.py'
     submit_emr(**kwargs)
 
 
@@ -119,29 +95,9 @@ wait_for_cluster_completion = PythonOperator(
     python_callable=wait_for_completion,
     dag=dag)
 
-transform_airport = PythonOperator(
-    task_id='transform_airport',
-    python_callable=transform_airport_to_parquet,
-    dag=dag)
-
-transform_state = PythonOperator(
-    task_id='transform_state',
-    python_callable=transform_state_to_parquet,
-    dag=dag)
-
-transform_country = PythonOperator(
-    task_id='transform_country',
-    python_callable=transform_country_to_parquet,
-    dag=dag)
-
-transform_visa_type = PythonOperator(
-    task_id='transform_visa_type',
-    python_callable=transform_visa_type_to_parquet,
-    dag=dag)
-
-transform_transport_type = PythonOperator(
-    task_id='transform_transport_type',
-    python_callable=transform_transport_type_to_parquet,
+transform_i94mapping = PythonOperator(
+    task_id='transform_i94mapping',
+    python_callable=transform_i94mapping_to_parquet,
     dag=dag)
 
 transform_airport_detail = PythonOperator(
@@ -160,10 +116,7 @@ terminate_cluster = PythonOperator(
     trigger_rule='all_done',
     dag=dag)
 
-create_cluster >> wait_for_cluster_completion >> transform_airport
-transform_airport >> transform_state >> transform_country
-transform_country >> transform_visa_type >> transform_transport_type
-
-transform_transport_type >> transform_airport_detail # noqa
+create_cluster >> wait_for_cluster_completion >> transform_i94mapping
+transform_i94mapping >> transform_airport_detail # noqa
 transform_airport_detail >> transform_cities_demographics
 transform_cities_demographics >> terminate_cluster
