@@ -53,6 +53,17 @@ def create_cluster(
                     'InstanceRole': 'CORE',
                     'InstanceType': core_node_instance_type,
                     'InstanceCount': num_core_nodes
+                },
+                {
+                    "Classification": "spark-env",
+                    "Configurations": [
+                        {
+                            "Classification": "export",
+                            "Properties": {
+                                "PYSPARK_PYTHON": "/usr/bin/python3"
+                            }
+                        }
+                    ]
                 }
             ],
             'KeepJobFlowAliveWhenNoSteps': True,
