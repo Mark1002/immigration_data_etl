@@ -143,11 +143,12 @@ def kill_spark_session(session_url):
     requests.delete(session_url, headers={'Content-Type': 'application/json'})
 
 
-def submit_statement(session_url, statement_path):
+def submit_statement(session_url, statement_path, args=''):
     """Submits the scala code as a simple JSON command to the Livy server."""
     statements_url = session_url + '/statements'
     with open(statement_path, 'r') as f:
         code = f.read()
+    code = args + code
     data = {'code': code}
     response = requests.post(
         statements_url, data=json.dumps(data),

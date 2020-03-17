@@ -59,7 +59,7 @@ def transform_imm_city_demographics(
 def main():
     """Main entry point."""
     imm_df = spark.read.parquet(
-        's3a://<s3-bucket>/processed/immigration/i94_apr16_sub.parquet'
+        's3a://<s3-bucket>/processed/immigration/i94_{0}_sub.parquet'.format(month_year) # noqa
     )
     airport_detail_df = spark.read.parquet(
         's3a://<s3-bucket>/processed/airport_detail.parquet'
@@ -71,7 +71,7 @@ def main():
         imm_df, airport_detail_df, demo_graph_df
     )
     imm_city_demograph_df.write.mode('overwrite').parquet(
-        's3a://<s3-bucket>/processed/imm_city_demographics.parquet'
+        's3a://<s3-bucket>/processed/imm_{0}_city_demographics.parquet'.format(month_year) # noqa
     )
 
 

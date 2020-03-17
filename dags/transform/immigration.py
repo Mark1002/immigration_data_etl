@@ -13,7 +13,7 @@ def transform_immigration() -> DataFrame:
     df_spark = spark.read.format(
         'com.github.saurfang.sas.spark'
     ).load(
-        's3a://<s3-bucket>/data/18-83510-I94-Data-2016/i94_apr16_sub.sas7bdat'
+        's3a://<s3-bucket>/data/18-83510-I94-Data-2016/i94_{0}_sub.sas7bdat'.format(month_year) # noqa
     )
     # exclude cic not used and other column
     # cic not used: visapost, occup, entdepa,
@@ -97,7 +97,7 @@ def main():
     """Main entry point."""
     imm_df = transform_immigration()
     imm_df.write.mode('overwrite').parquet(
-        's3a://<s3-bucket>/processed/immigration/i94_apr16_sub.parquet'
+        's3a://<s3-bucket>/processed/immigration/i94_{0}_sub.parquet'.format(month_year) # noqa
     )
 
 
