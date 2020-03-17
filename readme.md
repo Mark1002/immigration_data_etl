@@ -16,9 +16,18 @@ https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/
 
 This is a simple table of airport codes and corresponding cities.
 https://datahub.io/core/airport-codes#data 
+
+## Project Deployment
+The deployment and infrastructure of this project uses AWS cloudformation. I refer this [post](https://aws.amazon.com/tw/blogs/big-data/build-a-concurrent-data-orchestration-pipeline-using-amazon-emr-and-apache-livy/) to apply Amazon EMR and Apache Livy to construct my project. below picture is this project data pipline structure.
+
+![data pipeline](https://i.imgur.com/wvRCqjI.png)
+
 ## Explore and Assess the Data
+In this project, I want to focus on the relationship between U.S.A immigrant and their destination city.
+
 ## Define the Data Model
 ![data model](https://i.imgur.com/cUSH6Og.jpg)
+
 
 ## Construct ETL Pipeline
 ## Scenarios
