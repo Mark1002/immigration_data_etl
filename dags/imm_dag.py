@@ -95,6 +95,10 @@ def transform_immigration_to_parquet(**kwargs):
 def transform_imm_city_demographics_to_parquet(**kwargs):
     """Converts imm_city_demographics to parquet."""
     kwargs['file_path'] = '/root/airflow/dags/transform/imm_city_demographics.py' # noqa
+    execution_date = kwargs['execution_date']
+    month_year = execution_date.strftime('%b').lower() + execution_date.strftime('%y') # noqa
+    logging.info(month_year)
+    kwargs['pyspark_file_args'] = "month_year = '{0}'\n".format(month_year)
     submit_emr(**kwargs)
 
 
