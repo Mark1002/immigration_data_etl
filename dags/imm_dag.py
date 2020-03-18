@@ -20,7 +20,8 @@ default_args = {
 # Initialize the DAG
 # Concurrency --> Number of tasks allowed to run concurrently
 dag = DAG(
-    'us_immigration_etl', concurrency=3, default_args=default_args
+    'us_immigration_etl', concurrency=3,
+    default_args=default_args, max_active_runs=1
 )
 region = emr.get_region()
 emr.client(region_name=region)
