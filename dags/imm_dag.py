@@ -13,14 +13,13 @@ default_args = {
     'end_date': datetime(2016, 12, 1),
     'retries': 1,
     'retry_delay': timedelta(minutes=2),
-    'schedule_interval': '@monthly',
     'provide_context': True
 }
 
 # Initialize the DAG
 # Concurrency --> Number of tasks allowed to run concurrently
 dag = DAG(
-    'us_immigration_etl', concurrency=3,
+    'us_immigration_etl', concurrency=3, schedule_interval='@monthly',
     default_args=default_args, max_active_runs=1
 )
 region = emr.get_region()
