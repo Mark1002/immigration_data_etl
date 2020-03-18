@@ -105,6 +105,7 @@ def transform_imm_city_demographics_to_parquet(**kwargs):
 def check_immigration_quality_func(**kwargs):
     """Check immigration count."""
     kwargs['file_path'] = '/root/airflow/dags/transform/immigration_quality_check.py' # noqa
+    execution_date = kwargs['execution_date']
     month_year = execution_date.strftime('%b').lower() + execution_date.strftime('%y') # noqa
     logging.info(month_year)
     kwargs['pyspark_file_args'] = "month_year = '{0}'\n".format(month_year)
@@ -114,6 +115,7 @@ def check_immigration_quality_func(**kwargs):
 def check_imm_city_quality_func(**kwargs):
     """Check imm_city_demographics count."""
     kwargs['file_path'] = '/root/airflow/dags/transform/imm_city_quality_check.py' # noqa
+    execution_date = kwargs['execution_date']
     month_year = execution_date.strftime('%b').lower() + execution_date.strftime('%y') # noqa
     logging.info(month_year)
     kwargs['pyspark_file_args'] = "month_year = '{0}'\n".format(month_year)
