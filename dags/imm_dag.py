@@ -102,6 +102,24 @@ def transform_imm_city_demographics_to_parquet(**kwargs):
     submit_emr(**kwargs)
 
 
+def check_immigration_quality_func(**kwargs):
+    """Check immigration count."""
+    kwargs['file_path'] = '/root/airflow/dags/transform/immigration_quality_check.py' # noqa
+    month_year = execution_date.strftime('%b').lower() + execution_date.strftime('%y') # noqa
+    logging.info(month_year)
+    kwargs['pyspark_file_args'] = "month_year = '{0}'\n".format(month_year)
+    submit_emr(**kwargs)
+
+
+def check_imm_city_quality_func(**kwargs):
+    """Check imm_city_demographics count."""
+    kwargs['file_path'] = '/root/airflow/dags/transform/imm_city_quality_check.py' # noqa
+    month_year = execution_date.strftime('%b').lower() + execution_date.strftime('%y') # noqa
+    logging.info(month_year)
+    kwargs['pyspark_file_args'] = "month_year = '{0}'\n".format(month_year)
+    submit_emr(**kwargs)
+
+
 create_cluster = PythonOperator(
     task_id='create_cluster',
     python_callable=create_emr,
@@ -132,6 +150,16 @@ transform_immigration = PythonOperator(
     python_callable=transform_immigration_to_parquet,
     dag=dag)
 
+check_immigration_quality = PythonOperator(
+    task_id='check_immigration_quality',
+    python_callable=check_immigration_quality_func,
+    dag=dag)
+
+check_imm_city_quality = PythonOperator(
+    task_id='check_imm_city_quality',
+    python_callable=check_imm_city_quality_func,
+    dag=dag)
+
 transform_imm_city_demographics = PythonOperator(
     task_id='transform_imm_city_demographics',
     python_callable=transform_imm_city_demographics_to_parquet,
@@ -146,5 +174,7 @@ terminate_cluster = PythonOperator(
 create_cluster >> wait_for_cluster_completion >> transform_i94mapping
 transform_i94mapping >> transform_airport_detail >> transform_immigration
 transform_i94mapping >> transform_cities_demographics >> transform_immigration
-transform_immigration >> transform_imm_city_demographics
-transform_imm_city_demographics >> terminate_cluster
+transform_immigration >> check_immigration_quality
+check_immigration_quality >> transform_imm_city_demographics
+transform_imm_city_demographics >> check_imm_city_quality
+check_imm_city_quality >> terminate_cluster
