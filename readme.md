@@ -22,7 +22,7 @@ The deployment and infrastructure of this project uses AWS cloudformation. I ref
 
 ![data pipeline](https://i.imgur.com/wvRCqjI.png)
 
-If you want to deploy the project, you should upload the cloudformation yaml file to AWS cloudformation first.Then, AWS cloudformation can create stack according the cloudformation yaml file.
+If you want to deploy the project, you should upload the cloudformation yaml file to AWS cloudformation first.Then, AWS cloudformation can create stack according the cloudformation yaml file. After the stack is created, you have to upload all datasets from udacity project workplace to your cloudformation's S3. Then, you can start the airflow to run this pipeline on the cloudformation's EC2 instance.
 
 ## Explore and Assess the Data
 In this project, I want to focus on the relationship between U.S.A immigrant and their landing destination city. below are the data explore steps in each dataset.
@@ -90,4 +90,4 @@ We can easily adjust the airflow dag's parameter to achieve this setting.
 
 **The database needed to be accessed by 100+ people**
 
-We can increase the node number of the EMR cluster to increase the compute power of parallel.
+We can increase the node number of the EMR cluster to increase the compute power of parallel processing.
